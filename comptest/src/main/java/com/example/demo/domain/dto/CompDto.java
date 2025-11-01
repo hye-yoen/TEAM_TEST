@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 public class CompDto {
+    private Long compId;
     @NotBlank(message = "이미지 필수 항목")
     private String compImg;
     @NotBlank(message = "대회 이름 필수 항목")
