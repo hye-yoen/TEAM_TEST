@@ -121,17 +121,21 @@ public class CompController {
 
     @GetMapping("/search")
     public String searchComp(
-            @RequestParam(name = "keyword", required = false) String keyword,
+            @RequestParam(name = "name", required = false) String compName,
+            @RequestParam(name = "text", required = false) String compText,
+            @RequestParam(name = "img", required = false) String compImg,
             Model model
     ){
-        if(keyword.isEmpty() || keyword == null){
+        if((compName == null || compName.isEmpty())&& (compImg == null || compImg.isEmpty()) && (compText == null || compText.isEmpty())
+        ){
             model.addAttribute("errorMessage", "검색어를 입력해주세요.");
             model.addAttribute("compList", compService.getAllCompList());
             return "comp/list";
         }
         try {
             // 서비스에서 다중 조건 검색 가능하도록 메소드 구현 필요
-            List<CompDto> resultList = compService.searchComp(keyword);
+            List<CompDto> resultList = compService.searchComp(compName, compText, compImg);
+            System.out.println("compsearch3 " );
             if (resultList.isEmpty()) {
                 model.addAttribute("errorMessage", "검색 결과가 없습니다.");
             }

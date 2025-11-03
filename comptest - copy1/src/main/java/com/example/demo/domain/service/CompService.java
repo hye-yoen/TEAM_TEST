@@ -73,12 +73,17 @@ public class CompService {
                 .collect(Collectors.toList());
     }
 
-    public List<CompDto> searchComp(String keyword) {
+    public List<CompDto> searchComp(String compName, String compText, String compImg) {
         // 레포지토리에서 다중 조건 검색
-        List<Comp> comps = compRepository.searchByKeyword(keyword);
+        List<Comp> comps = compRepository.findByMultipleFields(compName, compText, compImg);
         // 엔티티 → DTO 변환
         return comps.stream()
-                .map(comp -> new CompDto())
+                .map(comp -> new CompDto(
+                        comp.getCompId(),
+                        comp.getCompImg(),
+                        comp.getCompName(),
+                        comp.getCompText()
+                ))
                 .collect(Collectors.toList());
     }
 

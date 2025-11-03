@@ -15,11 +15,18 @@ public interface CompRepository extends JpaRepository<Comp,Long> {
     Optional<Comp> findByCompName(String compName);
 
     //search
+//    @Query("SELECT c FROM Comp c " +
+//            "WHERE (:compName IS NULL OR c.compName LIKE %:compName%) " +
+//            "AND (:compText IS NULL OR c.compText LIKE %:compText%) " +
+//            "AND (:compImg IS NULL OR c.compImg LIKE %:compImg%)")
+//    List<Comp> findByMultipleFields(@Param("compName") String compName,
+//                                    @Param("compText") String compText,
+//                                    @Param("compImg") String compImg);
+
     @Query("SELECT c FROM Comp c " +
-            "WHERE (:compName IS NULL OR c.compName LIKE %:compName%) " +
-            "AND (:compText IS NULL OR c.compText LIKE %:compText%) " +
-            "AND (:compImg IS NULL OR c.compImg LIKE %:compImg%)")
-    List<Comp> findByMultipleFields(@Param("compName") String compName,
-                                    @Param("compText") String compText,
-                                    @Param("compImg") String compImg);
+            "WHERE c.compName LIKE %:keyword% " +
+            "OR c.compText LIKE %:keyword% " +
+            "OR c.compImg LIKE %:keyword%")
+    List<Comp> searchByKeyword(@Param("keyword") String keyword);
+
 }

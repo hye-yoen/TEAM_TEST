@@ -1,0 +1,27 @@
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Home</title>
+</head>
+<body>
+<h1>/memo/add PAGE</h1>
+
+<P> 앞으로 26분! </P>
+
+
+<form action="/memo/add" method="post">
+    <div>
+        <label>TEXT : </label><span th:text="${text}"></span><br/>
+        <textarea name="text"></textarea>
+    </div>
+    <div>
+        <label>WRITER : </label> <span th:text="${writer}"></span><br/>
+        <input name="writer"></textarea>
+    </div>
+    <div>
+        <button>메모추가</button>
+    </div>
+
+    <P> 앞으로 20분! </P>
+</form>
+</body>
+</html>
