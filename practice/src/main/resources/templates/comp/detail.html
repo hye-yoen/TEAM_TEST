@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>대회 상세 보기</title>
+</head>
+<body>
+<div>
+    <h2 th:text="${comp.compName}">대회 이름</h2>
+    <p th:src="${comp.compImg}">몰라</p>
+    <img th:text="${comp.compText}" alt="대회 이미지">
+
+    <form method="get" action="/comp/list">
+        <button>전체 조회 페이지</button>
+    </form>
+</div>
+</body>
+</html>

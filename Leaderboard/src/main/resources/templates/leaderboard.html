@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form method="get" action="/leaderboard">
+    <input type="text" name="keyword" placeholder="검색">
+    <button type="submit">검색</button>
+</form>
+
+<!-- 리더보드 리스트 -->
+<ul>
+    <li th:each="lb : ${leaderboard}">
+            <h3 th:text="${lb.user_id}">대회 이름</h3>
+            <p th:text="${lb.nickname}">대회 정보</p>
+            <p th:text="${lb.max}">대회 점수</p>
+    </li>
+</ul>
+
+
+</body>
+</html>
