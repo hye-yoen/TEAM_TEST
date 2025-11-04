@@ -16,17 +16,13 @@ public class Leaderboard {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long leaderBoardId;
 
-//    @ManyToOne
-//    @JoinColumn(name="compId")
-//    private Comp comp;
+    @ManyToOne
+    @JoinColumn(name="compId")
+    private Comp comp;
 
-    private String compname;
-
-//    @ManyToOne
-//    @JoinColumn(name="userId")
-//    private User user;
-
-    private String username;
+    @ManyToOne
+    @JoinColumn(name="userId")
+    private User user;
 
     private Double best_score; //최고 점수
     private LocalDateTime last_submit_time; //최근 제출 시간

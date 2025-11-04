@@ -17,12 +17,8 @@ public class Comp {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long compId;
-//    @Column(length = 25668)
-//    private String compImg;
     @Column(length = 100)
     private String compName;
-//    @Column(length = 5000)
-//    private String compText;
 
 
 

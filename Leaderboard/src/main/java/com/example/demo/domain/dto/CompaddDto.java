@@ -10,8 +10,6 @@ import lombok.NoArgsConstructor;
 @Data
 public class CompaddDto {
     private Long compId;
-    private String compImg;
     private String compName;
-    private String compText;
 }
 

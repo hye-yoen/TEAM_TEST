@@ -12,8 +12,10 @@ import java.time.LocalDateTime;
 public class LeaderboardDto {
 
     private Long leaderBoardId;
-    private String compname;
-    private String username;
+    private Long userId;
+    private Long compId;
+    private String compName;
+    private String userName;
     private Double best_score; //최고 점수
     private LocalDateTime last_submit_time; //최근 제출 시간
     private Integer submit_count; // 총 제출 횟수

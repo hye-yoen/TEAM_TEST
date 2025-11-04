@@ -35,14 +35,7 @@
     <li th:each="comp : ${compList}">
         <a th:href="@{'/comp/detail'(compId=${comp.compId})}">
             <h3 th:text="${comp.compName}">대회 이름</h3>
-            <p th:text="${comp.compText}">대회 정보</p>
-            <img th:src="${comp.compImg}" alt="대회 이미지">
         </a>
-
-        <form th:action="@{/comp/delete}" method="post">
-            <input type="hidden" name="compId" th:value="${comp.compId}">
-            <button type="submit">삭제</button>
-        </form>
     </li>
 </ul>
 </body>

@@ -27,43 +27,52 @@ public class LeaderboardController {
     private LeaderboardService leaderboardService;
 
     @GetMapping("")
-    public String LeaderboardAllList(@RequestParam(name = "keyword", required = false) String keyword,Model model)throws Exception{
+    public String LeaderboardAllList(
+            @RequestParam Long compId,
+            @RequestParam(name = "keyword", required = false) String keyword,
+            Model model
+    )throws Exception{
         log.info("leaderboard list");
-        List<LeaderboardDto> list = leaderboardService.getAllCompList();
 
+        List<LeaderboardDto> list = leaderboardService.getLeaderboardByCompetition(compId);
+        System.out.println(list);
         if( keyword == null || keyword.isEmpty()){
-            model.addAttribute("errorMessage", "검색어를 입력해주세요.");
+
             model.addAttribute("leaderboard", list);
+            model.addAttribute("compId", compId);
             return "leaderboard";
         }
         try {
             // 서비스에서 다중 조건 검색 가능하도록 메소드 구현 필요
-            List<LeaderboardDto> resultList = leaderboardService.searchLeaderboard(keyword);
+            List<LeaderboardDto> resultList = leaderboardService.searchLeaderboard(keyword,compId);
             System.out.println(resultList.size());
             if (resultList.isEmpty()) {
                 model.addAttribute("errorMessage", "검색 결과가 없습니다.");
-                System.out.println(resultList);
+                model.addAttribute("leaderboard", list);
             }
+
             model.addAttribute("leaderboard", resultList);
+
         } catch (Exception e) {
             model.addAttribute("errorMessage", "검색 중 오류가 발생했습니다.");
-            model.addAttribute("compList", List.of());
+            model.addAttribute("leaderboard", list);
         }
+        model.addAttribute("compId", compId);
 
         return "leaderboard";
     }
 
-    @GetMapping("/add")
-    public void comp_add ()throws Exception {
-        log.info("GET /comp/add...");
-    }
-    @PostMapping("/add")
-    public String comp_add_post(
-            LeaderboardDto dto
-    ) throws Exception {
-        //서비스 연결
-        Long insertedId = leaderboardService.leaderBoardAdd(dto);
-        return insertedId != null ? "redirect:/leaderboard" : "leaderboard/add";
-    }
+//    @GetMapping("/add")
+//    public void comp_add ()throws Exception {
+//        log.info("GET /comp/add...");
+//    }
+//    @PostMapping("/add")
+//    public String comp_add_post(
+//            LeaderboardDto dto
+//    ) throws Exception {
+//        //서비스 연결
+//        Long insertedId = leaderboardService.leaderBoardAdd(dto);
+//        return insertedId != null ? "redirect:/leaderboard" : "leaderboard/add";
+//    }
 
 }

@@ -5,19 +5,43 @@
     <title>Title</title>
 </head>
 <body>
-<form method="get" action="/leaderboard">
-    <input type="text" name="keyword" placeholder="검색">
+<!-- 대회 이름 -->
+<h3 th:text="${compName}">대회명</h3>
+
+<!-- 검색 폼 -->
+<form th:action="@{/leaderboard}" method="get">
+    <!-- 항상 compId 유지 -->
+    <input type="hidden" name="compId" th:value="${compId}">
+
+    <input type="text" name="keyword" placeholder="참가자 검색">
     <button type="submit">검색</button>
 </form>
+
+<!-- 에러 메시지 -->
+<div th:if="${errorMessage}">
+    <p th:text="${errorMessage}" style="color:red;"></p>
+</div>
+
+<br>
 
 <!-- 리더보드 리스트 -->
 <ul>
     <li th:each="lb, stat : ${leaderboard}">
-        <span th:text="${stat.index + 1}"></span>.
-        <b th:text="${lb.username}"></b>
-        — 점수: <span th:text="${lb.best_score}"></span>
-        — 제출: <span th:text="${lb.submit_count}"></span>회
-        — 최근: <span th:text="${#temporals.format(lb.last_submit_time, 'yyyy-MM-dd HH:mm')}"></span>
+        <!-- 순위 -->
+        <span th:text="${stat.index + 1}"></span>위&nbsp;
+
+        <!-- 참가자 -->
+        참가자: <span th:text="${lb.userName}"></span>&nbsp;
+
+        <!-- 점수 -->
+        점수: <span th:text="${lb.best_score}"></span>&nbsp;
+
+        <!-- 제출 -->
+        제출수: <span th:text="${lb.submit_count}"></span>&nbsp;
+
+        <!-- 최근 제출 -->
+        최근 제출:
+        <span th:text="${#temporals.format(lb.last_submit_time, 'yyyy-MM-dd HH:mm')}"></span>
     </li>
 </ul>
 

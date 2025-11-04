@@ -7,9 +7,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class CompDeleteDto {
-//    @NotBlank(message = "대회 이름 필수 항목")
-//    private String compName;
-
+public class CompDetailDto {
     private Long compId;
+    private String compName;
+
+
 }
