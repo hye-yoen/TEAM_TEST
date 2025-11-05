@@ -1,6 +1,5 @@
 package com.example.demo.domain.service;
 
-import com.example.demo.domain.dto.CompDto;
 import com.example.demo.domain.dto.LeaderboardDto;
 import com.example.demo.domain.entity.Comp;
 import com.example.demo.domain.entity.Leaderboard;
@@ -27,26 +26,6 @@ public class LeaderboardService {
 
     @Autowired
     private UserRepository userRepository;
-
-
-    public List<LeaderboardDto> getAllLeaderboard() {
-        System.out.println("LeaderBoardList");
-        return leaderboardRepository.findAll()
-                .stream()
-                .map(l -> new LeaderboardDto(
-                        l.getLeaderBoardId(),
-                        l.getComp().getCompId(),
-                        l.getUser().getUserId(),
-                        l.getComp().getCompName(),
-                        l.getUser().getUserName(),
-                        l.getBest_score(),
-                        l.getLast_submit_time(),
-                        l.getSubmit_count()
-                ))
-                .collect(Collectors.toList());
-    }
-
-
 
     public List<LeaderboardDto> getLeaderboardByCompetition(Long compId) {
         System.out.print("leaderboared-score-list");

@@ -34,7 +34,8 @@ public class LeaderboardController {
     )throws Exception{
         log.info("leaderboard list");
 
-        
+        List<LeaderboardDto> list = leaderboardService.getLeaderboardByCompetition(compId);
+        System.out.println(list);
         if( keyword == null || keyword.isEmpty()){
 
             model.addAttribute("leaderboard", list);
@@ -61,5 +62,17 @@ public class LeaderboardController {
         return "leaderboard";
     }
 
+//    @GetMapping("/add")
+//    public void comp_add ()throws Exception {
+//        log.info("GET /comp/add...");
+//    }
+//    @PostMapping("/add")
+//    public String comp_add_post(
+//            LeaderboardDto dto
+//    ) throws Exception {
+//        //서비스 연결
+//        Long insertedId = leaderboardService.leaderBoardAdd(dto);
+//        return insertedId != null ? "redirect:/leaderboard" : "leaderboard/add";
+//    }
 
 }
