@@ -39,26 +39,23 @@ public class LeaderboardController {
 
         if( keyword == null || keyword.isEmpty()){
             System.out.println("list2 : " + allList);
-            resultList = allList;
-            keyword =null;
+            model.addAttribute("leaderboard", allList);
+            model.addAttribute("keyword", "");
+            return "leaderboard";
+        }
 
-        }else {
             //검색 결과
             resultList = leaderboardService.searchLeaderboard(keyword);
             System.out.println(resultList.size());
             if (resultList.isEmpty()) {
                 model.addAttribute("errorMessage", "검색 결과가 없습니다.");
-               resultList =allList;
-            }
-        }
-        List<String> compNameList = resultList.stream()
-                .map(LeaderboardDto::getCompName)
-                .distinct()
-                .toList();
+                model.addAttribute("leaderboard", allList);
 
-        model.addAttribute("leaderboard",resultList );
-        model.addAttribute("compNameList",compNameList );
-        model.addAttribute("keyword",keyword==null ? "":keyword);
+            }else{
+                model.addAttribute("leaderboard",resultList);
+            }
+
+        model.addAttribute("keyword", keyword);
 
         return "leaderboard";
     }

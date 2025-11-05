@@ -47,6 +47,24 @@ public class LeaderboardService {
     }
 
 
+//
+//    public List<LeaderboardDto> getLeaderboardByCompetition(Long compId) {
+//        System.out.print("leaderboared-score-list");
+//        return leaderboardRepository.findByCompIdOrderByBestScoreDesc(compId)
+//                .stream()
+//                .map(l -> new LeaderboardDto(
+//                       l.getLeaderBoardId(),
+//                        l.getComp().getCompId(),
+//                        l.getUser().getUserId(),
+//                        l.getComp().getCompName(),
+//                        l.getUser().getUserName(),
+//                        l.getBest_score(),
+//                        l.getLast_submit_time(),
+//                        l.getSubmit_count()
+//                ))
+//                .collect(Collectors.toList());
+//    }
+
       public List<LeaderboardDto> searchLeaderboard(String keyword) {
         // 레포지토리에서 다중 조건 검색
         List<Leaderboard> leads = leaderboardRepository.searchAllByKeyword(keyword);
@@ -91,7 +109,7 @@ public class LeaderboardService {
     }
 
     public Long leaderBoardUpdate(LeaderboardDto dto) throws  Exception{
-        //기존 리더보드 업데이트
+        //기존 리더보드 조회
 
         Leaderboard list = leaderboardRepository.findById(dto.getLeaderBoardId()).orElse(null);
 
