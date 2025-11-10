@@ -17,8 +17,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class LeaderboardServiceImpl implements LeaderboardService {
 
-    @Autowired
-    private LeaderboardRepository leaderboardRepository;
+    private final LeaderboardRepository leaderboardRepository;
 
     @Override
     public List<LeaderboardEntryDto> getAllLeaderboard(){
@@ -43,7 +42,7 @@ public class LeaderboardServiceImpl implements LeaderboardService {
     @Override
     public List<LeaderboardEntryDto> searchLeaderboard(String keyword){
         // 레포지토리에서 다중 조건 검색
-        List<LeaderboardEntryDto> leads = leaderboardRepository.searchAllByKeyword(keyword);
+        List<Leaderboard> leads = leaderboardRepository.searchAllByKeyword(keyword);
         // 엔티티 → DTO 변환
         List<LeaderboardEntryDto> list =  leads.stream()
                 .map(l -> new LeaderboardEntryDto(
@@ -64,7 +63,7 @@ public class LeaderboardServiceImpl implements LeaderboardService {
     @Override
     public void computeRanksPerComp(Long compId) {
         // 해당 대회 참가자만 조회
-        List<Leaderboard> leaderboardList = leaderboardRepository.findByComp_CompId(compId);
+        List<Leaderboard> leaderboardList = leaderboardRepository.findByCompid(compId);
 
         if (leaderboardList.isEmpty()) return;
 
