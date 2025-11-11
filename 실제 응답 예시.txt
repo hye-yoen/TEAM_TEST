@@ -16,6 +16,12 @@
 //        }
 //]
 
+        //react에서 여러 데이터 받기
+        Map<String, Object> response = new HashMap<>();
+        response.put("leaderboard", resultList);
+        response.put("compNameList", compNameList);
+        response.put("keyword", keyword == "" ? "" : keyword);
 
-
-
+        if(isempty==true){
+            response.put("isEmpty",isempty);
+        }
