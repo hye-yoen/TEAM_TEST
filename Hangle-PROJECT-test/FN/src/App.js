@@ -19,7 +19,7 @@ function App() {
     <div className="App">
       <BR>
         <Routes>
-           <Route element={<Layout />}> {/*추가 및 변경 */}
+          <Route element={<Layout />}> {/*추가 및 변경 */}
             <Route path="/" element={<Main />} />
             <Route path="/competiton" element={<Competiton />} />
             <Route path="/myprofile" element={<MyProfile />} />
@@ -27,10 +27,9 @@ function App() {
             <Route path="/competitions" element={<CompetitionList />} />
             <Route path="/competitions/new" element={<CompetitionCreate />} />
             <Route path="/competitions/:id" element={<CompetitionDetail />} />
-
-            <Route path="/leaderboard" element={<Leaderboard/>}></Route>
+            <Route path="/leaderboard" element={<Leaderboard/>} />
           </Route>
-
+          
           <Route path="/login" element={<Login/>}></Route>
           <Route path="/join" element={<Join/>}></Route>
           

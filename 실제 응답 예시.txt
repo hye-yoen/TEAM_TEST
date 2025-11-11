@@ -1,0 +1,21 @@
+//실제 응답 예시
+//[
+//        {
+//        "rank": 1,
+//        "userid": "hyun",
+//        "bestScore": 98.5,
+//        "submissions": 3,
+//        "submittedAt": "2025-11-07T15:20:35"
+//        },
+//        {
+//        "rank": 2,
+//        "userid": "eun",
+//        "bestScore": 95.0,
+//        "submissions": 2,
+//        "submittedAt": "2025-11-07T14:59:12"
+//        }
+//]
+
+
+
+

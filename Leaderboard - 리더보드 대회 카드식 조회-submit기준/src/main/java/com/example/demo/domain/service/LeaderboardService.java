@@ -119,7 +119,7 @@ public class LeaderboardService {
 
 
 
-    //다른 컨트롤러에 넣을 것들? 확실한 것은 리더보드에선 추가 안됨
+    //submit 추가
 
     public Long leaderBoardAdd(LeaderboardDto dto) throws Exception{
 
@@ -130,7 +130,6 @@ public class LeaderboardService {
         Submit submit = submitRepository.findById(dto.getSubmitId())
                 .orElseThrow(() -> new IllegalArgumentException("유저 정보 없음. ID=" + dto.getUserId()));
 
-        //compName , userName 찾기
 //        Comp comp = compRepository.findById(dto.getCompId())
 //                .orElseThrow(() -> new IllegalArgumentException("대회 정보 없음. ID=" + dto.getCompId()));
 
