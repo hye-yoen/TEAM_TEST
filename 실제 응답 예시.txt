@@ -1,27 +1,20 @@
-//실제 응답 예시
-//[
-//        {
-//        "rank": 1,
-//        "userid": "hyun",
-//        "bestScore": 98.5,
-//        "submissions": 3,
-//        "submittedAt": "2025-11-07T15:20:35"
-//        },
-//        {
-//        "rank": 2,
-//        "userid": "eun",
-//        "bestScore": 95.0,
-//        "submissions": 2,
-//        "submittedAt": "2025-11-07T14:59:12"
-//        }
-//]
-
-        //react에서 여러 데이터 받기
-        Map<String, Object> response = new HashMap<>();
-        response.put("leaderboard", resultList);
-        response.put("compNameList", compNameList);
-        response.put("keyword", keyword == "" ? "" : keyword);
-
-        if(isempty==true){
-            response.put("isEmpty",isempty);
+실제 응답예시
+[
+        {
+        "rank":1,
+        "userid":"hyun",
+        "bestScore":98.5,
+        "submissions": 3,
+                "submittedAt": "2025-11-07T15:20:35"
+                },
+                {
+                "rank": 2,
+                "userid": "eun",
+                "bestScore": 95.0,
+                "submissions": 2,
+                "submittedAt": "2025-11-07T14:59:12"
+                }
         }
+]
+
+
