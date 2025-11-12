@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 
 const Leaderboard = () => {
 
-    const [leaderboard, setLeaderboard] = useState(0);
+    const [leaderboard, setLeaderboard] = useState([]);
     const [compNameList, setCompNameList] = useState([]);
     const [keyword, setKeyword] = useState("");
     const [isEmpty, setIsEmpty] = useState(false);
@@ -34,6 +34,10 @@ const Leaderboard = () => {
                 setLeaderboard(list);
                 const filteredCompList = [...new Set(list.map((item) => item.compname))];
                 setCompNameList(filteredCompList);
+
+                if(isEmpty != false){
+                    list = []
+                }
 
             })
             .then((data) => { console.log("data : ", data) })
@@ -67,8 +71,7 @@ const Leaderboard = () => {
                         <div key={compName}>
                             <h3>{compName}</h3>
                             <div className="card" style={{ overflowX: "auto" }}>
-                                <table className="leaderboard"
-                                    style={{ width: "100%", borderCollapse: "collapse" }}>
+                                <table className="leaderboard" style={{ width: "100%", borderCollapse: "collapse" }}>
                                     <thead>
                                         <tr>
                                             <th>순위</th>
@@ -85,7 +88,15 @@ const Leaderboard = () => {
                                                 <td>{entry.username}</td>
                                                 <td>{entry.score}</td>
                                                 <td>{entry.attempt}</td>
-                                                <td>{entry.submittedAt}</td>
+                                                <td>
+                                                    {new Date(entry.submittedAt).toLocaleString("ko-KR", {
+                                                        year: "numeric",
+                                                        month: "2-digit",
+                                                        day: "2-digit",
+                                                        hour: "2-digit",
+                                                        minute: "2-digit",
+                                                    })}
+                                                </td>
                                             </tr>
                                         ))}
                                     </tbody>
@@ -95,6 +106,23 @@ const Leaderboard = () => {
                     ))}
 
                 </div>
+
+
+
+                 {/* 데이터 받아오는 거 확인 (기본)*/}
+                        <div style={{ marginTop: "1rem", background: "#f9f9f9", padding: "1rem" }}>
+                                <h4>현재 상태 요약:</h4>
+                                <ul>
+                                    <li>leaderboard 길이: {leaderboard.length}</li>
+                                    <li>compNameList: {compNameList.join(", ") || "없음"}</li>
+                                    <li>keyword: {keyword || "없음"}</li>
+                                    <li>isEmpty: {String(isEmpty)}</li>
+                                </ul>
+                            </div>
+
+                            <pre style={{ background: "#eee", padding: "1rem", borderRadius: "8px" }}>
+                                {JSON.stringify(leaderboard, null, 2)}
+                            </pre>
 
             </section>
         </main>

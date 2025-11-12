@@ -34,7 +34,8 @@ public class LeaderboardServiceImpl implements LeaderboardService {
                         l.getScore(),
                         l.getAttempt(),
                         l.getSubmittedAt(),
-                        l.getComprank()
+                        l.getComprank(),
+                        l.getStatus()
                 ))
                 .collect(Collectors.toList());
         return list;
@@ -55,7 +56,8 @@ public class LeaderboardServiceImpl implements LeaderboardService {
                         l.getScore(),
                         l.getAttempt(),
                         l.getSubmittedAt(),
-                        l.getComprank()
+                        l.getComprank(),
+                        l.getStatus()
                 ))
                 .collect(Collectors.toList());
         return list;

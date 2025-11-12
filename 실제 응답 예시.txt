@@ -1,20 +1,17 @@
-실제 응답예시
-[
-        {
-        "rank":1,
-        "userid":"hyun",
-        "bestScore":98.5,
-        "submissions": 3,
-                "submittedAt": "2025-11-07T15:20:35"
-                },
-                {
-                "rank": 2,
-                "userid": "eun",
-                "bestScore": 95.0,
-                "submissions": 2,
-                "submittedAt": "2025-11-07T14:59:12"
-                }
-        }
-]
+    @Id
+    private Long leaderBoardId;
+    private Long compid;
+    private String userid;
+    private Long submissionid;
+    private String compname;
+    private String username;
+    private Double score; // 점수
+    private Integer attempt; // N번째 제출
+    private LocalDateTime submittedAt; //최근 제출 시간
+    private Integer comprank;
+
+<응답 예시 형식 만!> 
+
+
 
 

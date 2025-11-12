@@ -1,8 +1,8 @@
 package com.example.demo.domain.leaderboard.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.example.demo.domain.competition.entity.Status;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -50,4 +50,8 @@ public class Leaderboard {
     private Integer attempt; // N번째 제출
     private LocalDateTime submittedAt; //최근 제출 시간
     private Integer comprank;
+
+    //이것도 FK임
+    @Enumerated(EnumType.STRING)
+    private Status status; // OPEN, CLOSED, UPCOMING
 }

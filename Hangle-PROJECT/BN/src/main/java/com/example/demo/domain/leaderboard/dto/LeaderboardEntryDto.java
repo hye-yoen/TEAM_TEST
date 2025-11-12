@@ -1,5 +1,6 @@
 package com.example.demo.domain.leaderboard.dto;
 
+import com.example.demo.domain.competition.entity.Status;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -18,4 +19,7 @@ public class LeaderboardEntryDto {
     private Integer attempt; // N번째 제출
     private LocalDateTime submittedAt; //최근 제출 시간
     private Integer comprank;
+    private Status status;
+
+
 }
