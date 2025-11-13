@@ -1,9 +1,11 @@
 package com.example.demo.domain.leaderboard.service.impl;
 
+import com.example.demo.domain.competition.entity.Competition;
 import com.example.demo.domain.leaderboard.dto.LeaderboardEntryDto;
 import com.example.demo.domain.leaderboard.entity.Leaderboard;
 import com.example.demo.domain.leaderboard.repository.LeaderboardRepository;
 import com.example.demo.domain.leaderboard.service.LeaderboardService;
+import com.example.demo.domain.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -26,16 +28,16 @@ public class LeaderboardServiceImpl implements LeaderboardService {
                 .stream()
                 .map(l -> new LeaderboardEntryDto(
                         l.getLeaderBoardId(),
-                        l.getCompid(),
-                        l.getUserid(),
+                        l.getCompetition().getId(),
+                        l.getCompetition().getTitle(),
+                        l.getUser().getId(),
+                        l.getUser().getUserid(),
+                        l.getUser().getUsername(),
                         l.getSubmissionid(),
-                        l.getCompname(),
-                        l.getUsername(),
                         l.getScore(),
                         l.getAttempt(),
                         l.getSubmittedAt(),
-                        l.getComprank(),
-                        l.getStatus()
+                        l.getComprank()
                 ))
                 .collect(Collectors.toList());
         return list;
@@ -48,16 +50,16 @@ public class LeaderboardServiceImpl implements LeaderboardService {
         List<LeaderboardEntryDto> list =  leads.stream()
                 .map(l -> new LeaderboardEntryDto(
                         l.getLeaderBoardId(),
-                        l.getCompid(),
-                        l.getUserid(),
+                        l.getCompetition().getId(),
+                        l.getCompetition().getTitle(),
+                        l.getUser().getId(),
+                        l.getUser().getUserid(),
+                        l.getUser().getUsername(),
                         l.getSubmissionid(),
-                        l.getCompname(),
-                        l.getUsername(),
                         l.getScore(),
                         l.getAttempt(),
                         l.getSubmittedAt(),
-                        l.getComprank(),
-                        l.getStatus()
+                        l.getComprank()
                 ))
                 .collect(Collectors.toList());
         return list;
@@ -94,13 +96,13 @@ public class LeaderboardServiceImpl implements LeaderboardService {
         leaderboardRepository.saveAll(leaderboardList);
     }
     private Double getCompScore(Leaderboard lb) {
-        return (lb.getCompid() != null) ? lb.getScore() : null;
+        return (lb.getCompetition().getId() != null) ? lb.getScore() : null;
 //        return (lb.getComp() != null) ? lb.getSubmit().getBest_score() : null;
 
     }
 
     //submit 추가
-    public Long leaderBoardAdd(LeaderboardEntryDto dto) throws Exception{
+    public Long leaderBoardAdd(LeaderboardEntryDto dto, User user,Competition competition) throws Exception{
 
 
 //        User user = userRepository.findById(dto.getUserId())
@@ -110,17 +112,14 @@ public class LeaderboardServiceImpl implements LeaderboardService {
 //                .orElse(null);
 //        Comp comp = compRepository.findById(dto.getCompId())
 //              .orElse(null);
-//        //submit안에 comp외래키 받은 경우
-//        Comp comp = submit.getComp();
+
 
         //dto -> entity
         Leaderboard leaderboard = Leaderboard.builder()
                 .leaderBoardId(null)
-                .compid(dto.getCompid())
-                .userid(dto.getUserid())
+                .competition(competition)
+                .user(user)
                 .submissionid(dto.getSubmissionid())
-                .compname(dto.getCompname())
-                .username(dto.getUsername())
                 .score(dto.getScore())
                 .attempt(dto.getAttempt())
                 .submittedAt(dto.getSubmittedAt())
@@ -128,7 +127,7 @@ public class LeaderboardServiceImpl implements LeaderboardService {
                 .build();
         leaderboardRepository.save(leaderboard);
 
-        computeRanksPerComp(dto.getCompid()); //rank 업데이트
+        computeRanksPerComp(competition.getId()); //rank 업데이트
 
         return leaderboard.getLeaderBoardId();
     }
@@ -156,7 +155,7 @@ public class LeaderboardServiceImpl implements LeaderboardService {
 
         leaderboardRepository.save(list);
 
-        computeRanksPerComp(list.getCompid());
+        computeRanksPerComp(list.getCompetition().getId());
 
         return list.getLeaderBoardId();
     }

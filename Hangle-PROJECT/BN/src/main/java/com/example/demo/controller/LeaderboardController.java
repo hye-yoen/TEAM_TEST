@@ -64,14 +64,14 @@ public class LeaderboardController {
         }
         //대회명 리스트
         List<String> compNameList = resultList.stream()
-                .map(LeaderboardEntryDto::getCompname)
+                .map(LeaderboardEntryDto::getCompetitionTitle)
                 .distinct()
                 .toList();
 
         //출력용 정렬
         resultList = resultList.stream()
                 .sorted(Comparator
-                        .comparing(LeaderboardEntryDto::getCompname, Comparator.nullsLast(String::compareTo))
+                        .comparing(LeaderboardEntryDto::getCompetitionTitle, Comparator.nullsLast(String::compareTo))
                         .thenComparing(LeaderboardEntryDto::getComprank, Comparator.nullsLast(Integer::compareTo)))
                 .toList();
 

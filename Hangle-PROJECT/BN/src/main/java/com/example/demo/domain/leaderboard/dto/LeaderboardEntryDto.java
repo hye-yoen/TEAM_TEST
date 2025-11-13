@@ -10,16 +10,19 @@ import java.time.LocalDateTime;
 @Builder
 public class LeaderboardEntryDto {
     private Long leaderBoardId;
-    private Long compid;
-    private String userid;
-    private Long submissionid;
-    private String compname;
+
+    private Long competitionId; //! 대회 아이디
+    private String competitionTitle; //대회 이름 !
+
+    private Long userId;          // PK
+    private String userid;        // 로그인 ID
     private String username;
+
+    private Long submissionid;
     private Double score; // 점수
     private Integer attempt; // N번째 제출
     private LocalDateTime submittedAt; //최근 제출 시간
     private Integer comprank;
-    private Status status;
 
 
 }

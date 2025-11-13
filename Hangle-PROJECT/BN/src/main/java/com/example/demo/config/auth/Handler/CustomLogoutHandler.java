@@ -4,10 +4,9 @@ import com.example.demo.config.auth.service.PrincipalDetails;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
-
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 @Slf4j
@@ -20,7 +19,7 @@ public class CustomLogoutHandler implements LogoutHandler {
 		log.info("CustomLogoutHandler's logout invoke");
 
 		PrincipalDetails principalDetails = (PrincipalDetails)authentication.getPrincipal();
-		String provider = principalDetails.getUserDto().getProvider();
+		String provider = principalDetails.getUser().getProvider();
 		if(provider!=null && provider.startsWith("kakao")){
 
 		}else if(provider!=null && provider.startsWith("naver")){

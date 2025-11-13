@@ -15,17 +15,21 @@ public interface LeaderboardRepository extends JpaRepository<Leaderboard,Long> {
     //순위 조회
     @Query("""
             SELECT l FROM Leaderboard l
-            ORDER BY l.compid ASC, l.score DESC
+            JOIN FETCH l.comp c
+            JOIN FETCH l.user u
+            ORDER BY  c.compId ASC, l.score DESC
     """)
     List<Leaderboard> findAllOrderByCompThenScore();
 
     //서치 compId 비동기 처리
     @Query("""
     SELECT l FROM Leaderboard l
-    WHERE LOWER(l.username) LIKE LOWER(CONCAT('%', :keyword, '%'))
-       OR LOWER(l.compname) LIKE LOWER(CONCAT('%', :keyword, '%'))
-    ORDER BY l.compid ASC, l.score DESC, l.submittedAt ASC
-""")
+    JOIN FETCH l.comp c
+    JOIN FETCH l.user u
+    WHERE LOWER(u.username) LIKE LOWER(CONCAT('%', :keyword, '%'))
+       OR LOWER(c.title) LIKE LOWER(CONCAT('%', :keyword, '%'))
+    ORDER BY  c.compId ASC, l.score DESC, l.submittedAt ASC
+    """)
     List<Leaderboard> searchAllByKeyword(@Param("keyword") String keyword);
 
     List<Leaderboard> findByCompid(Long compId);
@@ -35,7 +39,7 @@ public interface LeaderboardRepository extends JpaRepository<Leaderboard,Long> {
     // FK받은 경우
     // ========================
 
-//    //순위 조회
+    //순위 조회
 //    @Query("""
 //            SELECT l FROM Leaderboard l
 //            JOIN FETCH l.comp c
@@ -44,7 +48,7 @@ public interface LeaderboardRepository extends JpaRepository<Leaderboard,Long> {
 //            ORDER BY c.compId ASC, s.best_score DESC
 //    """)
 //    List<Leaderboard> findAllOrderByCompThenScore();
-//
+
 //    //서치 compId 비동기 처리
 //    @Query("""
 //    SELECT l FROM Leaderboard l

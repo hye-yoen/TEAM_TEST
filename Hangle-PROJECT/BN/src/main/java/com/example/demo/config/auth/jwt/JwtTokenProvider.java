@@ -9,16 +9,16 @@ import com.example.demo.domain.user.repository.SignatureRepository;
 import com.example.demo.domain.user.repository.UserRepository;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
-import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
-import org.springframework.context.event.EventListener;
 
 import java.security.Key;
 import java.time.LocalDate;
@@ -43,26 +43,26 @@ public class JwtTokenProvider {
         return this.key;
     }
 
-//    //SIGNATURE 저장
-//    @EventListener(ApplicationReadyEvent.class)
-//    public void init(){
-//        List<Signature> list = signatureRepository.findAll(); //1개 값만 저장되어있음
-//        if(list.isEmpty()){
-//            //처음 SIGNATURE발급
-//            byte[] keyBytes = KeyGenerator.getKeygen();
-//            this.key = Keys.hmacShaKeyFor(keyBytes);
-//            Signature signature = new Signature();
-//            signature.setKeyBytes(keyBytes);
-//            signature.setCreateAt(LocalDate.now());
-//            signatureRepository.save(signature);
-//            System.out.println("JwtTokenProvider init()  Key init : " + key);
-//        }else{
-//            //기존 SIGNATURE이용
-//            Signature signature = list.get(0);
-//            this.key = Keys.hmacShaKeyFor(signature.getKeyBytes());
-//            System.out.println("JwtTokenProvider init()  기존 Key 사용 : " + key);
-//        }
-//    }
+    //SIGNATURE 저장
+    @EventListener(ApplicationReadyEvent.class)
+    public void init(){
+        List<Signature> list = signatureRepository.findAll(); //1개 값만 저장되어있음
+        if(list.isEmpty()){
+            //처음 SIGNATURE발급
+            byte[] keyBytes = KeyGenerator.getKeygen();
+            this.key = Keys.hmacShaKeyFor(keyBytes);
+            Signature signature = new Signature();
+            signature.setKeyBytes(keyBytes);
+            signature.setCreateAt(LocalDate.now());
+            signatureRepository.save(signature);
+            System.out.println("JwtTokenProvider init()  Key init : " + key);
+        }else{
+            //기존 SIGNATURE이용
+            Signature signature = list.get(0);
+            this.key = Keys.hmacShaKeyFor(signature.getKeyBytes());
+            System.out.println("JwtTokenProvider init()  기존 Key 사용 : " + key);
+        }
+    }
     public JwtTokenProvider() {
 
     }
@@ -88,15 +88,16 @@ public class JwtTokenProvider {
         Date accessTokenExpiresIn = new Date(now + JwtProperties.ACCESS_TOKEN_EXPIRATION_TIME); // 60초후 만료
         String accessToken = Jwts.builder()
                 .setSubject(authentication.getName())
-                .claim("userid",authentication.getName()) //정보저장
-                .claim("auth", authorities)//정보저장
+                .addClaims(claims)
                 .setExpiration(accessTokenExpiresIn)
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
 
         // Refresh Token 생성
         String refreshToken = Jwts.builder()
-                .setExpiration(new Date(now + JwtProperties.REFRESH_TOKEN_EXPIRATION_TIME))    //1일: 24 * 60 * 60 * 1000 = 86400000
+                .setSubject(authentication.getName())
+                .claim("userid", authentication.getName())
+                .setExpiration(new Date(now + JwtProperties.REFRESH_TOKEN_EXPIRATION_TIME))
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
 
@@ -142,12 +143,12 @@ public class JwtTokenProvider {
         String userid = claims.getSubject(); //userid
 
         // PrincipalDetails 생성
-        PrincipalDetails principalDetails = new PrincipalDetails();
-        Optional<User> userOptional = userRepository.findById(userid);
+        User user = userRepository.findByUserid(userid);
         UserDto userDto = null;
-        if(userOptional.isPresent())
-            userDto = UserDto.toDto(userOptional.get());
-        principalDetails.setUserDto(userDto);
+        if (user == null) {
+            throw new UsernameNotFoundException("아이디가 존재하지 않습니다.");
+        }
+        PrincipalDetails principalDetails = new PrincipalDetails(user);
 
         System.out.println("JwtTokenProvider.getAuthentication UseridPasswordAuthenticationToken : " + accessToken);
         UsernamePasswordAuthenticationToken useridPasswordAuthenticationToken =
@@ -173,7 +174,7 @@ public class JwtTokenProvider {
         }
         catch (ExpiredJwtException e) {
             log.info("Expired JWT Token", e);
-            throw new ExpiredJwtException(null,null,null);
+            throw e;
 
         } catch (UnsupportedJwtException e) {
             log.info("Unsupported JWT Token", e);
@@ -181,6 +182,11 @@ public class JwtTokenProvider {
             log.info("JWT claims string is empty.", e);
         }
         return false;
+    }
+
+    public Date getExpiration(String token) {
+        return Jwts.parserBuilder().setSigningKey(key).build()
+                .parseClaimsJws(token).getBody().getExpiration();
     }
 
 }
