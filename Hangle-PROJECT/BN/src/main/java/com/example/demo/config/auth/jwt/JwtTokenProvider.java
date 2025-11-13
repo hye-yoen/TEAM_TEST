@@ -45,25 +45,25 @@ public class JwtTokenProvider {
     }
 
     //SIGNATURE 저장
-    @EventListener(ApplicationReadyEvent.class)
-    public void init(){
-        List<Signature> list = signatureRepository.findAll(); //1개 값만 저장되어있음
-        if(list.isEmpty()){
-            //처음 SIGNATURE발급
-            byte[] keyBytes = KeyGenerator.getKeygen();
-            this.key = Keys.hmacShaKeyFor(keyBytes);
-            Signature signature = new Signature();
-            signature.setKeyBytes(keyBytes);
-            signature.setCreateAt(LocalDate.now());
-            signatureRepository.save(signature);
-            System.out.println("JwtTokenProvider init()  Key init : " + key);
-        }else{
-            //기존 SIGNATURE이용
-            Signature signature = list.get(0);
-            this.key = Keys.hmacShaKeyFor(signature.getKeyBytes());
-            System.out.println("JwtTokenProvider init()  기존 Key 사용 : " + key);
-        }
-    }
+//    @EventListener(ApplicationReadyEvent.class)
+//    public void init(){
+//        List<Signature> list = signatureRepository.findAll(); //1개 값만 저장되어있음
+//        if(list.isEmpty()){
+//            //처음 SIGNATURE발급
+//            byte[] keyBytes = KeyGenerator.getKeygen();
+//            this.key = Keys.hmacShaKeyFor(keyBytes);
+//            Signature signature = new Signature();
+//            signature.setKeyBytes(keyBytes);
+//            signature.setCreateAt(LocalDate.now());
+//            signatureRepository.save(signature);
+//            System.out.println("JwtTokenProvider init()  Key init : " + key);
+//        }else{
+//            //기존 SIGNATURE이용
+//            Signature signature = list.get(0);
+//            this.key = Keys.hmacShaKeyFor(signature.getKeyBytes());
+//            System.out.println("JwtTokenProvider init()  기존 Key 사용 : " + key);
+//        }
+//    }
     public JwtTokenProvider() {
 
     }
