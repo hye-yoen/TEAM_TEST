@@ -1,5 +1,9 @@
 package com.example.demo.config.auth.Handler;
 
+import java.io.IOException;
+import java.util.Arrays;
+
+
 import com.example.demo.config.auth.jwt.JwtProperties;
 import com.example.demo.config.auth.redis.RedisUtil;
 import com.example.demo.config.auth.service.PrincipalDetails;
@@ -8,16 +12,15 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
+
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.io.IOException;
-import java.util.Arrays;
 
 @Slf4j
 @Component

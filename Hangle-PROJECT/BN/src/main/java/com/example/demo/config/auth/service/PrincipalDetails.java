@@ -1,5 +1,6 @@
 package com.example.demo.config.auth.service;
 
+import com.example.demo.domain.user.dto.UserDto;
 import com.example.demo.domain.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
