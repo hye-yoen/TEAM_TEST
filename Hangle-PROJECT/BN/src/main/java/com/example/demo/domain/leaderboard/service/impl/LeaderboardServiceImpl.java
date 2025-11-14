@@ -135,11 +135,11 @@ public class LeaderboardServiceImpl implements LeaderboardService {
         Double newScore = dto.getScore();
 
         if(oldScore >= newScore){
-            list.setAttempt(dto.getAttempt() + 1);
+            list.setAttempt(list.getAttempt() + 1);
             list.setSubmittedAt(LocalDateTime.now());
         }else{
             list.setSubmittedAt(LocalDateTime.now());
-            list.setAttempt(dto.getAttempt() + 1);
+            list.setAttempt(list.getAttempt() + 1);
             list.setScore(newScore);
         }
 
