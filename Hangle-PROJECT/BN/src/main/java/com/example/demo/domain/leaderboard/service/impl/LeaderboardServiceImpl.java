@@ -96,23 +96,13 @@ public class LeaderboardServiceImpl implements LeaderboardService {
         leaderboardRepository.saveAll(leaderboardList);
     }
     private Double getCompScore(Leaderboard lb) {
-        return (lb.getCompetition().getId() != null) ? lb.getScore() : null;
-//        return (lb.getComp() != null) ? lb.getSubmit().getBest_score() : null;
+//      return (lb.getCompetition().getId() != null) ? lb.getScore() : null;
+        return  lb.getScore();
 
     }
 
-    //submit 추가
-    public Long leaderBoardAdd(LeaderboardEntryDto dto, User user,Competition competition) throws Exception{
-
-
-//        User user = userRepository.findById(dto.getUserId())
-//                .orElse(null);
-//
-//        Submit submit = submitRepository.findById(dto.getSubmitId())
-//                .orElse(null);
-//        Comp comp = compRepository.findById(dto.getCompId())
-//              .orElse(null);
-
+    //submit => submissionid, score
+    public Long leaderBoardAdd(LeaderboardEntryDto dto, User user,Competition competition){
 
         //dto -> entity
         Leaderboard leaderboard = Leaderboard.builder()
@@ -121,9 +111,9 @@ public class LeaderboardServiceImpl implements LeaderboardService {
                 .user(user)
                 .submissionid(dto.getSubmissionid())
                 .score(dto.getScore())
-                .attempt(dto.getAttempt())
-                .submittedAt(dto.getSubmittedAt())
-                .comprank(dto.getComprank())
+                .attempt(1)
+                .submittedAt(LocalDateTime.now())
+                .comprank(0) //초반에 comprank업데이트 안되있음 => 0으로 초기화
                 .build();
         leaderboardRepository.save(leaderboard);
 
@@ -132,7 +122,7 @@ public class LeaderboardServiceImpl implements LeaderboardService {
         return leaderboard.getLeaderBoardId();
     }
 
-    public Long leaderBoardUpdate(LeaderboardEntryDto dto) throws  Exception{
+    public Long leaderBoardUpdate(LeaderboardEntryDto dto) {
 
         //기존 리더보드 가져오기
         Leaderboard list = leaderboardRepository.findById(dto.getLeaderBoardId()).orElse(null);
