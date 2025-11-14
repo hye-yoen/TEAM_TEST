@@ -5,6 +5,7 @@ import com.example.demo.domain.leaderboard.dto.LeaderboardEntryDto;
 import com.example.demo.domain.leaderboard.entity.Leaderboard;
 import com.example.demo.domain.leaderboard.repository.LeaderboardRepository;
 import com.example.demo.domain.leaderboard.service.LeaderboardService;
+import com.example.demo.domain.submmitex.entity.Submission;
 import com.example.demo.domain.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -33,8 +34,10 @@ public class LeaderboardServiceImpl implements LeaderboardService {
                         l.getUser().getId(),
                         l.getUser().getUserid(),
                         l.getUser().getUsername(),
-                        l.getSubmissionid(),
-                        l.getScore(),
+                        l.getSubmission().getSubmitId(),
+                        l.getSubmission().getScore(),
+//                        l.getSubmissionid(),
+//                        l.getScore(),
                         l.getAttempt(),
                         l.getSubmittedAt(),
                         l.getComprank()
@@ -55,8 +58,10 @@ public class LeaderboardServiceImpl implements LeaderboardService {
                         l.getUser().getId(),
                         l.getUser().getUserid(),
                         l.getUser().getUsername(),
-                        l.getSubmissionid(),
-                        l.getScore(),
+                        l.getSubmission().getSubmitId(),
+                        l.getSubmission().getScore(),
+//                        l.getSubmissionid(),
+//                        l.getScore(),
                         l.getAttempt(),
                         l.getSubmittedAt(),
                         l.getComprank()
@@ -97,20 +102,22 @@ public class LeaderboardServiceImpl implements LeaderboardService {
     }
     private Double getCompScore(Leaderboard lb) {
 //      return (lb.getCompetition().getId() != null) ? lb.getScore() : null;
-        return  lb.getScore();
+        return  lb.getSubmission().getScore();
 
     }
 
     //submit => submissionid, score
-    public Long leaderBoardAdd(LeaderboardEntryDto dto, User user,Competition competition){
+    //submitservice에 추가 : 예시 버전 submitex에 있음
+    public Long leaderBoardAdd(User user, Competition competition, Submission submission){
 
         //dto -> entity
         Leaderboard leaderboard = Leaderboard.builder()
                 .leaderBoardId(null)
                 .competition(competition)
                 .user(user)
-                .submissionid(dto.getSubmissionid())
-                .score(dto.getScore())
+                .submission(submission)
+//                .submissionid(dto.getSubmissionid())
+//                .score(dto.getScore())
                 .attempt(1)
                 .submittedAt(LocalDateTime.now())
                 .comprank(0) //초반에 comprank업데이트 안되있음 => 0으로 초기화
@@ -131,7 +138,7 @@ public class LeaderboardServiceImpl implements LeaderboardService {
             return null;
         }
 
-        Double oldScore = list.getScore(); //예전 점수
+        Double oldScore = list.getSubmission().getScore(); //예전 점수
         Double newScore = dto.getScore();
 
         if(oldScore >= newScore){
@@ -140,7 +147,7 @@ public class LeaderboardServiceImpl implements LeaderboardService {
         }else{
             list.setSubmittedAt(LocalDateTime.now());
             list.setAttempt(list.getAttempt() + 1);
-            list.setScore(newScore);
+            list.getSubmission().setScore(newScore);
         }
 
         leaderboardRepository.save(list);

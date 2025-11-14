@@ -32,10 +32,11 @@ public class SubmitService {
     private CompetitionRepository competitionRepository;
 
     @Transactional
-    public Long submit(Long competitionId, Long userId, Double score) {
+    public Long submit(Long competitionId, Long userId,Long submissionId ,Double score) {
 
         User user = userRepository.findById(userId).orElseThrow();
         Competition competition = competitionRepository.findById(competitionId).orElseThrow();
+        Submission submission2 = submissionRepository.findById(submissionId).orElseThrow();
 
         // 1) 제출 저장
         Submission submission = Submission.builder()
@@ -53,11 +54,7 @@ public class SubmitService {
         // 3) 존재하면 update, 없으면 add
         if (lb == null) {
             // ADD
-            LeaderboardEntryDto dto = new LeaderboardEntryDto();
-            dto.setSubmissionid(submission.getSubmitId());
-            dto.setScore(submission.getScore());
-            // add는 dto, user, competition 3개가 필요함
-            leaderboardService.leaderBoardAdd(dto, user, competition);
+            leaderboardService.leaderBoardAdd(user, competition,submission2);
 
         } else {
             // UPDATE
