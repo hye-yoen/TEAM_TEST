@@ -1,0 +1,267 @@
+.main {
+  grid-area: main;
+  padding: 14px 18px 28px;
+  animation: fadeIn 0.2s ease-out;
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
+  /* 메인 페이지 전체 래퍼 */
+  .main-page {
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* 섹션 사이 간격 */
+  }
+
+  /* 각 섹션 공통 스타일 */
+  .section-block {
+    display: block;
+  }
+
+  .section-overview {
+    /* 필요하면 배경을 아주 옅게 줄 수도 있음 */
+    /* background: linear-gradient(135deg, rgba(16,185,129,0.04), transparent); */
+  }
+
+  .section-competitions,
+  .section-datasets {
+    /* 위쪽만 살짝 띄워 보이게 */
+    /* padding-top: 4px; */
+  }
+
+  /* 웰컴 영역 */
+  .welcome {
+    margin-bottom: 12px;
+
+    h1 {
+      margin: 0;
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    p {
+      margin: 2px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+    }
+  }
+
+  .welcome-actions {
+    margin-top: 10px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .primary-btn,
+  .secondary-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 12px;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .primary-btn {
+    background: var(--primary);
+    color: #fff;
+    border: 1px solid var(--primary);
+
+    &:hover {
+      background: var(--primary-hover);
+    }
+  }
+
+  .secondary-btn {
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--border);
+
+    &:hover {
+      background: var(--badge);
+    }
+  }
+
+  /* 요약 지표 */
+  .stats {
+    display: grid;
+    gap: 8px;
+    grid-template-columns: repeat(6, minmax(90px, 1fr));
+    margin: 8px 0 16px;
+  }
+
+  .tile {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: var(--shadow);
+
+    h4 {
+      margin: 0 0 4px;
+      font-size: 11px;
+    }
+
+    .num {
+      font-size: 16px;
+      font-weight: 800;
+    }
+
+    .sub {
+      font-size: 10px;
+      color: var(--muted);
+    }
+
+    .theme-dark & {
+      h4 { color: #9ae6b4; }
+    }
+  }
+
+  /* 섹션 타이틀 (대회, 데이터셋) */
+  .section-title {
+    font-size: 16px;
+    font-weight: 800;
+    margin: 12px 0 8px;
+  }
+
+  /* 공통 카드 그리드 */
+  .grid {
+    display: grid;
+    gap: 12px;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    justify-items: stretch;
+  }
+
+  /* 카드 */
+  .card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px;
+    box-shadow: var(--shadow);
+    text-align: left;
+    opacity: 0;
+    transform: translate(30px, 8px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+
+    &.animate {
+      opacity: 1;
+      transform: translate(0, 0);
+    }
+
+    h3 {
+      font-size: 13px;
+      margin-bottom: 4px;
+      line-height: 1.35;
+    }
+  }
+
+  .muted {
+    color: var(--muted);
+  }
+
+  p.muted {
+    flex-grow: 1;
+    margin-bottom: 10px;
+    font-size: 12px;
+  }
+
+  .meta {
+    margin: 0 0 6px;
+    font-size: 10.5px;
+    color: var(--muted);
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--badge);
+    color: #065f46;
+    border-radius: 999px;
+    padding: 2px 8px;
+    font-weight: 800;
+    font-size: 10px;
+    align-self: flex-start;
+
+    .theme-dark & {
+      color: #34d399;
+    }
+  }
+
+  a.link {
+    align-self: flex-start;
+    font-size: 12px;
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 700;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  .field {
+    margin-bottom: 8px;
+  }
+
+  input[type='email'],
+  input[type='password'] {
+    width: 100%;
+    padding: 6px 8px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--surface);
+    color: var(--text);
+    font-size: 12px;
+
+    &:focus {
+      border-color: var(--primary);
+      outline: none;
+      box-shadow: 0 0 0 3px var(--ring);
+    }
+  }
+
+  .chart {
+    height: 90px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--chart-grad);
+  }
+}
+
+/* 카드 등장 애니메이션 (전역) */
+@keyframes slideInRight {
+  from {
+    transform: translateX(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.card {
+  opacity: 0;
+  transform: translateX(30px);
+  animation: slideInRight 0.35s ease-out forwards;
+
+  &:nth-child(1) { animation-delay: 0.05s; }
+  &:nth-child(2) { animation-delay: 0.1s; }
+  &:nth-child(3) { animation-delay: 0.15s; }
+  &:nth-child(4) { animation-delay: 0.2s; }
+  &:nth-child(5) { animation-delay: 0.25s; }
+  &:nth-child(6) { animation-delay: 0.3s; }
+  &:nth-child(7) { animation-delay: 0.35s; }
+  &:nth-child(8) { animation-delay: 0.4s; }
+}

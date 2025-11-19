@@ -24,19 +24,22 @@ function App() {
   return (
     <div className="App">
       <BR>
-        <Routes>
+          <Routes>
           <Route element={<Layout />}>
             <Route path="/" element={<Main />} />
             <Route path="/myprofile" element={<ProtectedRoute><MyProfile/></ProtectedRoute>} />
             <Route path="/setting" element={<Setting />} />
-            <Route path="/Competition" element={<ProtectedRoute><Competition /></ProtectedRoute>} />
+            {/* <Route path="/Competition" element={<ProtectedRoute><Competition /></ProtectedRoute>} /> */}
+            <Route path="/competitions/:id/submit" element={<ProtectedRoute><Competition /></ProtectedRoute>} />
             <Route path="/competitions" element={<ProtectedRoute><CompetitionList/></ProtectedRoute>} />
-            <Route path="/competitions/new" element={<ProtectedRoute requiredRole="ROLE_MANAGER"><CompetitionCreate/></ProtectedRoute>} />
+            {/* <Route path="/competitions/new" element={<ProtectedRoute requiredRole="ROLE_MANAGER"><CompetitionCreate/></ProtectedRoute>} /> */}
+            <Route path="/competitions/new" element={<ProtectedRoute ><CompetitionCreate/></ProtectedRoute>} />
             <Route path="/competitions/:id" element={<ProtectedRoute><CompetitionDetail/></ProtectedRoute>} />
             <Route path="/FaqPage" element={<FaqPage />} />
             <Route path="/inquiry/write" element={<ProtectedRoute><InquiryWrite /></ProtectedRoute>} />
             <Route path="/myprofile/inquiries" element={<ProtectedRoute><MyInquiries /></ProtectedRoute>} />
-            <Route path="/admin/inquiries" element={<ProtectedRoute requiredRole="ROLE_ADMIN"><InquiryManagement /></ProtectedRoute>} />
+            {/* <Route path="/admin/inquiries" element={<ProtectedRoute requiredRole="ROLE_ADMIN"><InquiryManagement /></ProtectedRoute>} /> */}
+            <Route path="/admin/inquiries" element={<ProtectedRoute ><InquiryManagement /></ProtectedRoute>} />
             <Route path="/leaderboard" element={<Leaderboard/>}></Route>
           </Route>
 

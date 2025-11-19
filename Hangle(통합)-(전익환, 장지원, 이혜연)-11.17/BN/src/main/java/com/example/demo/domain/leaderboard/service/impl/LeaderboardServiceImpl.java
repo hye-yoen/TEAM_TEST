@@ -104,64 +104,68 @@ public class LeaderboardServiceImpl implements LeaderboardService {
 
     }
 
-    //csvsave서비스 추가 : 예시 버전 leaderboardcontroller 하단 부분에 있음
+
     public Long leaderBoardAdd(User user, Competition competition, CompetitionCSVSave competitionCSVSave){
 
-        //dto -> entity
-        Leaderboard leaderboard = Leaderboard.builder()
-                .leaderBoardId(null)
-                .competition(competition)
-                .user(user)
-                .competitionCSVSave(competitionCSVSave)
-                .attempt(1)
-                .submittedAt(LocalDateTime.now())
-                .comprank(0) //초반에 comprank업데이트 안되있음 => 0으로 초기화
-                .build();
-        leaderboardRepository.save(leaderboard);
-
-        computeRanksPerComp(competition.getId()); //rank 업데이트
-
-        leaderboardRepository.flush(); //flush 함수 추가
-
-
-        return leaderboard.getLeaderBoardId();
-    }
-
-    public Long leaderBoardUpdate(LeaderboardEntryDto dto) {
+        Long competitionId =competition.getId();
+        Long userId = user.getId();
 
         //기존 리더보드 가져오기
-        Leaderboard list = leaderboardRepository.findById(dto.getLeaderBoardId()).orElse(null);
+        Leaderboard lb = leaderboardRepository
+                .findByCompetitionIdAndUserId(competitionId, userId)
+                .orElse(null);
 
-        if(list == null){
-            return null;
+        //기존 리더보드 없을 경우
+        if(lb == null) {
+
+            //dto -> entity
+            lb = Leaderboard.builder()
+                    .leaderBoardId(null)
+                    .competition(competition)
+                    .user(user)
+                    .competitionCSVSave(competitionCSVSave)
+                    .attempt(1)
+                    .submittedAt(LocalDateTime.now())
+                    .comprank(0) //초반에 comprank업데이트 안되있음 => 0으로 초기화
+                    .build();
+            leaderboardRepository.save(lb);
+        } //기존 리더보드 있을 경우
+        else{
+            Double oldScore = lb.getCompetitionCSVSave().getScore(); //예전 점수
+            Double newScore = competitionCSVSave.getScore();
+
+            lb.setAttempt(lb.getAttempt() + 1);
+            lb.setSubmittedAt(LocalDateTime.now());
+
+            if(oldScore < newScore) {
+                lb.getCompetitionCSVSave().setScore(newScore);
+            }
         }
 
-        Double oldScore = list.getCompetitionCSVSave().getScore(); //예전 점수
-        Double newScore = dto.getScore();
-
-        if(oldScore >= newScore){
-            list.setAttempt(list.getAttempt() + 1);
-            list.setSubmittedAt(LocalDateTime.now());
-        }else{
-            list.setSubmittedAt(LocalDateTime.now());
-            list.setAttempt(list.getAttempt() + 1);
-            list.getCompetitionCSVSave().setScore(newScore);
-        }
-
-        leaderboardRepository.save(list);
-
-        computeRanksPerComp(list.getCompetition().getId());
-
+        computeRanksPerComp(competition.getId()); //rank 업데이트
         leaderboardRepository.flush(); //flush 함수 추가
-
-        return list.getLeaderBoardId();
+        return lb.getLeaderBoardId();
     }
 
 
-    public void leaderboardDelete(Long leaderBoardId){
-       Leaderboard leaderboard = leaderboardRepository.findById(leaderBoardId)
-               .orElse(null); //이거 어케 함? 어떻게 데이터를 보낼지 알수가 없음... ㅠㅠ
+//    public Long leaderBoardAdd(User user, Competition competition, CompetitionCSVSave competitionCSVSave){
+//
+//        //dto -> entity
+//        Leaderboard leaderboard = Leaderboard.builder()
+//                .leaderBoardId(null)
+//                .competition(competition)
+//                .user(user)
+//                .competitionCSVSave(competitionCSVSave)
+//                .attempt(1)
+//                .submittedAt(LocalDateTime.now())
+//                .comprank(0) //초반에 comprank업데이트 안되있음 => 0으로 초기화
+//                .build();
+//        leaderboardRepository.save(leaderboard);
+//
+//        computeRanksPerComp(competition.getId()); //rank 업데이트
+//
+//        return leaderboard.getLeaderBoardId();
+//    }
 
-       leaderboardRepository.deleteById(leaderboard);
-    }
+
 }

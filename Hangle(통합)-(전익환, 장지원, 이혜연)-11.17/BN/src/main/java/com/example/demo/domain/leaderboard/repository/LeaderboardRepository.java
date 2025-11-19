@@ -48,5 +48,4 @@ public interface LeaderboardRepository extends JpaRepository<Leaderboard,Long> {
     );
 
 
-    void deleteById(Leaderboard leaderboard);
 }
